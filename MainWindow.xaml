@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuimiOSCompanion"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="QuimiOS Companion" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen">
     <Grid>
+        <TabControl>
+            <TabItem Header="Lista de Trabajo">
+                <Grid Background="#F5F5F5">
+                    <TextBlock Text="Sample Status View"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16"
+                               Foreground="#666"/>
+                </Grid>
+            </TabItem>
 
+            <TabItem Header="Entrega de Turno">
+                <Grid Background="#F5F5F5">
+                    <TextBlock Text="Shift Handover View"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16"
+                               Foreground="#666"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Inventario">
+                <Grid Background="#F5F5F5">
+                    <TextBlock Text="Inventory Management View"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontSize="16"
+                               Foreground="#666"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
