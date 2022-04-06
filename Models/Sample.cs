@@ -4,13 +4,19 @@ namespace QuimiOSCompanion.Models
 {
     public class Sample
     {
-        public string Id { get; set; }
-        public string ClientName { get; set; }
-        public string SampleType { get; set; }
-        public DateTime ReceivedDate { get; set; }
-        public string Status { get; set; }
-        public string AssignedTo { get; set; }
-        public DateTime? CompletedDate { get; set; }
+        public int Id { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? ReceivedAt { get; set; }
+        public int? Folio { get; set; }
+        public int? ClientId { get; set; }
+        public int? PatientId { get; set; }
+        public int? ExamId { get; set; }
+        public string ExamName { get; set; }
+        public DateTime? ProcessedAt { get; set; }
+        public DateTime? ValidatedAt { get; set; }
+        public string Location { get; set; }
+        public string Outsourcer { get; set; }
         public string Priority { get; set; }
+        public DateTime? BirthDate { get; set; }
     }
 }
