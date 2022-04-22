@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <StartupObject>QuimiOSCompanion.TestPdfParser</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="itext7" Version="9.4.0" />
+    <PackageReference Include="itext7" Version="7.2.5" />
   </ItemGroup>
 
 </Project>
