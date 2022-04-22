@@ -52,29 +52,49 @@ namespace QuimiOSCompanion.Services
             var dataTokens = tokens.Skip(dataStartIndex).Take(dataEndIndex - dataStartIndex).ToArray();
 
             var rows = new List<ParsedRow>();
-            for (int i = 0; i < dataTokens.Length; i += 5)
-            {
-                if (i + 4 >= dataTokens.Length)
-                    break;
+            int i = 0;
 
+            while (i < dataTokens.Length)
+            {
                 var code = dataTokens[i];
 
-                if (!decimal.TryParse(dataTokens[i + 1], out var res) ||
-                    !decimal.TryParse(dataTokens[i + 2], out var rep) ||
-                    !decimal.TryParse(dataTokens[i + 3], out var qc) ||
-                    !decimal.TryParse(dataTokens[i + 4], out var man))
+                if (decimal.TryParse(code, out _))
                 {
+                    i++;
                     continue;
                 }
 
-                rows.Add(new ParsedRow
+                if (i + 4 >= dataTokens.Length)
+                    break;
+
+                var values = new decimal[4];
+                bool allNumeric = true;
+
+                for (int j = 0; j < 4; j++)
                 {
-                    ReagentCode = code,
-                    ResearchConsumption = res,
-                    RepeatConsumption = rep,
-                    QCConsumption = qc,
-                    ManualConsumption = man
-                });
+                    if (!decimal.TryParse(dataTokens[i + 1 + j], out values[j]))
+                    {
+                        allNumeric = false;
+                        break;
+                    }
+                }
+
+                if (allNumeric)
+                {
+                    rows.Add(new ParsedRow
+                    {
+                        ReagentCode = code,
+                        ResearchConsumption = values[0],
+                        RepeatConsumption = values[1],
+                        QCConsumption = values[2],
+                        ManualConsumption = values[3]
+                    });
+                    i += 5;
+                }
+                else
+                {
+                    i++;
+                }
             }
 
             return (startDate, endDate, rows);
