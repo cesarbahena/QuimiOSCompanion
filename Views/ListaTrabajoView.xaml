@@ -1,0 +1,82 @@
+<UserControl x:Class="QuimiOSCompanion.Views.ListaTrabajoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Filter Section -->
+        <Border Grid.Row="0" Background="White" Padding="15" Margin="0,0,0,10"
+                BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Cliente ID:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox Grid.Column="1" Text="{Binding ClientId, UpdateSourceTrigger=PropertyChanged}"
+                         VerticalAlignment="Center" Padding="5"/>
+
+                <TextBlock Grid.Column="2" Text="Desde:" VerticalAlignment="Center" Margin="15,0,10,0"/>
+                <DatePicker Grid.Column="3" SelectedDate="{Binding StartDate}"
+                           VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Column="4" Text="Hasta:" VerticalAlignment="Center" Margin="15,0,10,0"/>
+                <DatePicker Grid.Column="5" SelectedDate="{Binding EndDate}"
+                           VerticalAlignment="Center"/>
+
+                <Button Grid.Column="7" Content="Buscar" Command="{Binding LoadSamplesCommand}"
+                        Padding="20,8" Background="#007ACC" Foreground="White"
+                        BorderThickness="0" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <!-- Samples DataGrid -->
+        <Border Grid.Row="1" Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
+            <Grid>
+                <DataGrid ItemsSource="{Binding Samples}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          SelectionMode="Single"
+                          GridLinesVisibility="Horizontal"
+                          HeadersVisibility="Column"
+                          RowHeight="35"
+                          AlternatingRowBackground="#F9F9F9">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Folio" Binding="{Binding Folio}" Width="80"/>
+                        <DataGridTextColumn Header="Cliente" Binding="{Binding ClientId}" Width="80"/>
+                        <DataGridTextColumn Header="Paciente" Binding="{Binding PatientId}" Width="100"/>
+                        <DataGridTextColumn Header="Examen" Binding="{Binding ExamName}" Width="*"/>
+                        <DataGridTextColumn Header="Prioridad" Binding="{Binding Priority}" Width="100"/>
+                        <DataGridTextColumn Header="Recibido" Binding="{Binding ReceivedAt, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
+                        <DataGridTextColumn Header="Procesado" Binding="{Binding ProcessedAt, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
+                        <DataGridTextColumn Header="Validado" Binding="{Binding ValidatedAt, StringFormat=\{0:dd/MM/yyyy\}}" Width="100"/>
+                        <DataGridTextColumn Header="Ubicación" Binding="{Binding Location}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Loading Overlay -->
+                <Grid Background="#80FFFFFF" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Cargando muestras..." FontSize="16" Foreground="#666"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

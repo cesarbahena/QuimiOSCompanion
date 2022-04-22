@@ -1,0 +1,78 @@
+<UserControl x:Class="QuimiOSCompanion.Views.InventarioView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" Padding="15" Margin="0,0,0,10"
+                BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Gestión de Inventario" FontSize="18" FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+
+                <Button Grid.Column="1" Content="Actualizar Inventario" Command="{Binding LoadInventoryCommand}"
+                        Padding="15,8" Background="#007ACC" Foreground="White"
+                        BorderThickness="0" Cursor="Hand"/>
+            </Grid>
+        </Border>
+
+        <!-- Inventory DataGrid -->
+        <Border Grid.Row="1" Background="White" BorderBrush="#DDD" BorderThickness="1" CornerRadius="4">
+            <Grid>
+                <DataGrid ItemsSource="{Binding InventoryItems}"
+                          SelectedItem="{Binding SelectedItem}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          SelectionMode="Single"
+                          GridLinesVisibility="Horizontal"
+                          HeadersVisibility="Column"
+                          RowHeight="35"
+                          AlternatingRowBackground="#F9F9F9">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Código" Binding="{Binding Code}" Width="120"/>
+                        <DataGridTextColumn Header="Nombre" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Categoría" Binding="{Binding Category}" Width="150"/>
+                        <DataGridTextColumn Header="Stock Actual" Binding="{Binding CurrentStock}" Width="100"/>
+                        <DataGridTextColumn Header="Stock Mínimo" Binding="{Binding MinStock}" Width="100"/>
+                        <DataGridTextColumn Header="Stock Máximo" Binding="{Binding MaxStock}" Width="100"/>
+                        <DataGridTextColumn Header="Unidad" Binding="{Binding Unit}" Width="80"/>
+                        <DataGridTemplateColumn Header="Estado" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{Binding IsLowStock, Converter={StaticResource LowStockToBrushConverter}}"
+                                            CornerRadius="3" Padding="5,2">
+                                        <TextBlock Text="{Binding IsLowStock, Converter={StaticResource LowStockToTextConverter}}"
+                                                   Foreground="White" FontSize="11" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Loading Overlay -->
+                <Grid Background="#80FFFFFF"
+                      Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Cargando inventario..." FontSize="16" Foreground="#666"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

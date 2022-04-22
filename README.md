@@ -1,5 +1,33 @@
-#  Consumos inventario
-Es un programa sencillo que desarrollé para satisfacer una necesidad de mi trabajo como Responsable de un Laboratorio Clínico de Referencia. 
-La necesidad era capturar el consumo diario en una Web App del Sistema de Manejo de Información de Laboratorio (LIMS). 
-Este sistema no tenía la funcionalidad de que estos consumos se transmitieran automáticamente a pesar de contar con esta información de manera digital. 
-Por lo tanto, decidí automatizar el proceso por medio de una Web App sencilla, y de pasó mejorar mis habilidades de programación.
+# QuimiOSCompanion
+
+WPF desktop application for laboratory technicians working with legacy LIMS system.
+
+## Features
+
+### Lista de Trabajo (Work List)
+View and search sample status in real-time from QuimiOSHub API.
+
+### Entrega de Turno (Shift Handover)
+Create shift handover records with pending sample accountability.
+
+### Inventario (Inventory Management)
+Automated reagent consumption tracking with PDF parsing capabilities.
+
+- Parse daily consumption PDFs from laboratory equipment
+- Select performed calibrations to calculate total consumption
+- Validate inventory stock before submission
+- Submit consumption records to QuimiOSHub API
+- Automatic inventory updates via API
+
+## Technical Stack
+
+- .NET 6 Windows Desktop
+- WPF with MVVM pattern
+- iText7 for PDF parsing
+- REST API integration with QuimiOSHub
+
+## Requirements
+
+- Windows 10 or later
+- .NET 6 Runtime
+- QuimiOSHub API access

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -58,6 +59,31 @@ namespace QuimiOSCompanion.Services
         public async Task<List<ShiftHandover>> GetShiftHandoversAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<ShiftHandover>>("shift-handovers");
+        }
+
+        public async Task<List<Reagent>> GetReagentsAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Reagent>>("reagents");
+        }
+
+        public async Task<bool> SubmitConsumptionAsync(DateTime consumptionDate, List<ConsumptionData> consumptions)
+        {
+            var dto = new
+            {
+                consumptions = consumptions.Select(c => new
+                {
+                    reagentId = c.ReagentId,
+                    consumptionDate,
+                    researchConsumption = c.ResearchConsumption,
+                    repeatConsumption = c.RepeatConsumption,
+                    qcConsumption = c.QCConsumption,
+                    manualConsumption = c.ManualConsumption,
+                    calibrationConsumption = c.CalibrationConsumption
+                }).ToList()
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("consumptions", dto);
+            return response.IsSuccessStatusCode;
         }
     }
 }

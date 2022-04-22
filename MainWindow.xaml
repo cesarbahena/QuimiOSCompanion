@@ -4,39 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuimiOSCompanion"
+        xmlns:views="clr-namespace:QuimiOSCompanion.Views"
         mc:Ignorable="d"
-        Title="QuimiOS Companion" Height="600" Width="1000"
+        Title="QuimiOS Companion" Height="700" Width="1200"
         WindowStartupLocation="CenterScreen">
-    <Grid>
-        <TabControl>
-            <TabItem Header="Lista de Trabajo">
-                <Grid Background="#F5F5F5">
-                    <TextBlock Text="Sample Status View"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontSize="16"
-                               Foreground="#666"/>
-                </Grid>
+    <Grid Background="#F5F5F5">
+        <TabControl Margin="0" BorderThickness="0">
+            <TabItem Header="Lista de Trabajo" FontSize="14" Padding="15,8">
+                <views:ListaTrabajoView/>
             </TabItem>
 
-            <TabItem Header="Entrega de Turno">
-                <Grid Background="#F5F5F5">
-                    <TextBlock Text="Shift Handover View"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontSize="16"
-                               Foreground="#666"/>
-                </Grid>
+            <TabItem Header="Entrega de Turno" FontSize="14" Padding="15,8">
+                <views:EntregaTurnoView/>
             </TabItem>
 
-            <TabItem Header="Inventario">
-                <Grid Background="#F5F5F5">
-                    <TextBlock Text="Inventory Management View"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontSize="16"
-                               Foreground="#666"/>
-                </Grid>
+            <TabItem Header="Inventario" FontSize="14" Padding="15,8">
+                <views:InventarioView/>
             </TabItem>
         </TabControl>
     </Grid>
