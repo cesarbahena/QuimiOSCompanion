@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.57" />
     <PackageReference Include="itext7" Version="7.2.5" />
   </ItemGroup>
 
