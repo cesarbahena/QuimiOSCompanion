@@ -202,30 +202,40 @@ namespace QuimiOSCompanion.Services
 
         private void AddCommonData(Dictionary<string, string> formData)
         {
+            // ASP.NET AJAX ScriptManager: Identifies partial postback with target UpdatePanel
+            // Format: {UpdatePanelID}|{TriggerControlID}
             formData["ctl00$ContentMasterPage$ScriptManager1"] = "ctl00$ContentMasterPage$UpdatePanel1|ctl00$ContentMasterPage$btnGuardaMasivo";
-            formData["__LASTFOCUS"] = "";
+
+            // WebForms postback event routing (empty when button click triggers postback)
             formData["__EVENTTARGET"] = "";
             formData["__EVENTARGUMENT"] = "";
-            formData["ctl00_treePrincipal_ExpandState"] = "eunnnnnnnnnnnnnunnnnnnnnnnnnnnnunnnnunnnnnnnnnnnennnunnun";
-            formData["ctl00_treePrincipal_SelectedNode"] = "ctl00_treePrincipalt49";
+
+            // ViewState validation key (static per page, validates postback authenticity)
             formData["__VIEWSTATEGENERATOR"] = "81A526C4";
-            formData["ctl00$ContentMasterPage$txtFecDesde_MaskedEditExtender_ClientState"] = "";
-            formData["ctl00$ContentMasterPage$ddlSuc"] = "2";
-            formData["ctl00$ContentMasterPage$cmbEquipo"] = "6";
-            formData["ctl00$ContentMasterPage$cmbMesaOrdenac"] = "2";
-            formData["ctl00$ContentMasterPage$hfActivo"] = "0";
-            formData["ctl00$ContentMasterPage$hfCalcAuto"] = "0";
-            formData["ctl00$ContentMasterPage$grdConsumo$ctl01$chkProvAll"] = "on";
+
+            // Business context: Branch/Equipment configuration validated server-side
+            formData["ctl00$ContentMasterPage$ddlSuc"] = "2";              // Branch location ID
+            formData["ctl00$ContentMasterPage$cmbEquipo"] = "6";           // Equipment ID (ARCHITECT c8000)
+            formData["ctl00$ContentMasterPage$cmbMesaOrdenac"] = "2";      // Workstation/bench ID
+
+            // Server-side processing flags
+            formData["ctl00$ContentMasterPage$hfActivo"] = "0";            // Active record filter
+            formData["ctl00$ContentMasterPage$hfCalcAuto"] = "0";          // Disable auto-calc (client provides values)
+
+            // Button that triggered postback (routes to save event handler)
             formData["ctl00$ContentMasterPage$btnGuardaMasivo"] = "Guardar Consumo";
         }
 
         private void AddSearchParams(Dictionary<string, string> formData, DateTime date)
         {
+            // Consumption date in dd/MM/yyyy format (server-side validation)
             formData["ctl00$ContentMasterPage$txtDesdeB"] = date.ToString("dd/MM/yyyy");
         }
 
         private void AddInputValues(Dictionary<string, string> formData, List<ConsumptionData> consumptions, Dictionary<string, GridRowData> rows)
         {
+            // Generate grid input fields for each reagent consumption
+            // Pattern: ctl00$ContentMasterPage$grdConsumo$ctl{RowNumber}${FieldName}
             foreach (var consumption in consumptions)
             {
                 if (!rows.TryGetValue(consumption.ReagentCode, out var rowData))
@@ -233,26 +243,27 @@ namespace QuimiOSCompanion.Services
 
                 var prefix = $"ctl00$ContentMasterPage$grdConsumo$ctl{rowData.RowNumber}";
 
-                formData[$"{prefix}$txtPacientes"] = consumption.Px.ToString();
-                formData[$"{prefix}$txtRepeticiones"] = consumption.Rep.ToString();
-                formData[$"{prefix}$txtControlCapMGrd"] = consumption.QC.ToString();
-                formData[$"{prefix}$txtCalibracionCapMGrd"] = consumption.Cal.ToString();
-                formData[$"{prefix}$txtCancelacionCapMGrd"] = consumption.Canc.ToString();
-                formData[$"{prefix}$cmbMotCancelacionGrd"] = consumption.Motivo;
-                formData[$"{prefix}$hfIDProducto"] = rowData.ProductId.ToString();
+                formData[$"{prefix}$txtPacientes"] = consumption.Px.ToString();                      // Patient samples
+                formData[$"{prefix}$txtRepeticiones"] = consumption.Rep.ToString();                  // Repeat tests
+                formData[$"{prefix}$txtControlCapMGrd"] = consumption.QC.ToString();                 // QC controls
+                formData[$"{prefix}$txtCalibracionCapMGrd"] = consumption.Cal.ToString();            // Calibrations
+                formData[$"{prefix}$txtCancelacionCapMGrd"] = consumption.Canc.ToString();           // Cancellations
+                formData[$"{prefix}$cmbMotCancelacionGrd"] = consumption.Motivo;                     // Cancellation reason
+                formData[$"{prefix}$hfIDProducto"] = rowData.ProductId.ToString();                   // Product ID (from grid)
             }
         }
 
         private void AddMetaValues(Dictionary<string, string> formData, Dictionary<string, GridRowData> rows)
         {
+            // Add required grid metadata for each row (server-side validation expects these)
             foreach (var rowData in rows.Values)
             {
                 var prefix = $"ctl00$ContentMasterPage$grdConsumo$ctl{rowData.RowNumber}";
 
-                formData[$"{prefix}$chkQueProveedor"] = "on";
-                formData[$"{prefix}$txtValidacionCapMGrd"] = "0";
-                formData[$"{prefix}$txtSinIdentificarCapMGrd"] = "0";
-                formData[$"{prefix}$cmbMotSinIdentificarGrd"] = "[Seleccione]";
+                formData[$"{prefix}$chkQueProveedor"] = "on";                      // Supplier checkbox
+                formData[$"{prefix}$txtValidacionCapMGrd"] = "0";                  // Validation samples
+                formData[$"{prefix}$txtSinIdentificarCapMGrd"] = "0";              // Unidentified samples
+                formData[$"{prefix}$cmbMotSinIdentificarGrd"] = "[Seleccione]";    // Unidentified reason
             }
         }
     }
