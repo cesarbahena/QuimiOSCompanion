@@ -13,11 +13,14 @@ namespace QuimiOSCompanion.Services
     {
         private readonly HttpClient _httpClient;
         private readonly CookieContainer _cookieContainer;
-        private const string BaseUrl = "http://172.16.0.117";
+
+        // Development mode uses mock QuimiOS in QuimiOSHub
+        // Production mode uses legacy LIMS at 172.16.0.117
+        private const string DefaultBaseUrl = "http://localhost:5001/mock-quimios";
         private const string Username = "cbahena";
         private const string Password = "alpe58";
 
-        public QuimiOSApiClient()
+        public QuimiOSApiClient(string? baseUrl = null)
         {
             _cookieContainer = new CookieContainer();
             var handler = new HttpClientHandler
@@ -27,7 +30,7 @@ namespace QuimiOSCompanion.Services
             };
             _httpClient = new HttpClient(handler)
             {
-                BaseAddress = new Uri(BaseUrl)
+                BaseAddress = new Uri(baseUrl ?? DefaultBaseUrl)
             };
         }
 
